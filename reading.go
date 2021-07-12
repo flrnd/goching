@@ -17,7 +17,7 @@ type hexagram struct {
 
 type reading struct {
 	Hexagram    hexagram
-	Lines       []string
+	Lines       yarrow
 	MovingLines []int
 	RelatingHex hexagram
 }
@@ -133,8 +133,5 @@ func (r reading) print() {
 // main function
 func main() {
 	rand.Seed(time.Now().UnixNano())
-
-	newReading := newYarrows.castReading()
-
-	newReading.print()
+	newYarrows.castReading().print()
 }
