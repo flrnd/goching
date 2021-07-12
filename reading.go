@@ -22,6 +22,10 @@ type reading struct {
 	RelatingHex hexagram
 }
 
+var yarrows = yarrow{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
+	"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin",
+}
+
 func (hex hexagram) findRelatingHexagram(lines []int) hexagram {
 	bs := strings.Split(hex.BinaryString, "")
 	for _, line := range lines {
@@ -34,16 +38,18 @@ func (hex hexagram) findRelatingHexagram(lines []int) hexagram {
 	return relatingHex
 }
 
-func shuffle(src []string) yarrow {
-	size := len(src)
-	dest := make([]string, size)
+func (y yarrow) shuffle() yarrow {
+	size := len(y)
+	dest := make(yarrow, size)
 	perm := rand.Perm(size)
-	for index := range src {
-		dest[index] = src[perm[index]]
+	for index := range y {
+		dest[index] = y[perm[index]]
 	}
 
 	return dest
 }
+
+var newYarrows = yarrows.shuffle()
 
 func toBinary(hex []string) string {
 	var sb strings.Builder
@@ -128,13 +134,7 @@ func (r reading) print() {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	yarrow := []string{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
-		"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin",
-	}
-
-	shuffled := shuffle(yarrow)
-
-	newReading := shuffled.castReading()
+	newReading := newYarrows.castReading()
 
 	newReading.print()
 }
