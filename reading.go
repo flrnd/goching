@@ -90,28 +90,26 @@ func (y yarrow) newCast() []string {
 
 func (y yarrow) castReading() reading {
 	cast := y.newCast()
-	hex := hexagram{}
-	relatingHex := hexagram{}
-	reading := reading{
-		Hexagram:    hexagram{},
-		Lines:       []string{},
-		MovingLines: []int{},
-		RelatingHex: hexagram{},
-	}
+	binaryString := toBinary(cast)
 
-	hex.BinaryString = toBinary(cast)
-	hex.Number = HexBinaryStringToNumber(hex.BinaryString)
+	hex := hexagram{
+		Number:       HexBinaryStringToNumber(binaryString),
+		BinaryString: binaryString,
+	}
 
 	movingLines := movingLines(cast)
+	var relatingHex hexagram
 
-	reading.Hexagram = hex
-	reading.Lines = cast
-	reading.MovingLines = movingLines
 	if len(movingLines) > 0 {
-		relatingHex = reading.Hexagram.findRelatingHexagram(movingLines)
+		relatingHex = hex.findRelatingHexagram(movingLines)
 	}
-	reading.RelatingHex = relatingHex
-	return reading
+
+	return reading{
+		Hexagram:    hex,
+		Lines:       cast,
+		MovingLines: movingLines,
+		RelatingHex: relatingHex,
+	}
 }
 
 func (r reading) print() {
