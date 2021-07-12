@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -79,16 +80,15 @@ func Test_movingLines(t *testing.T) {
 	}
 }
 
-func generateCastStub() []string {
-	result := yarrow{"OYang", "Yin", "Yin", "OYang", "OYang", "Yang"}
-	return result
+func newCastStub() yarrow {
+	return yarrow{"Yang OYang OYang Yin Yang Yin"}
 }
 
 func Test_castReading(t *testing.T) {
-	hex := hexagram{25, "100111"}
-	movingLines := []int{0, 3, 4}
-	resultingHex := hexagram{23, "000001"}
-	read := reading{hex, generateCastStub(), movingLines, resultingHex}
+	hex := hexagram{5, "111010"}
+	movingLines := []int{1, 2}
+	resultingHex := hexagram{3, "100010"}
+	read := reading{hex, newCastStub(), movingLines, resultingHex}
 
 	type args struct {
 		y yarrow
@@ -99,11 +99,12 @@ func Test_castReading(t *testing.T) {
 		args args
 		want reading
 	}{
-		{"25 100111", args{yarrows}, read},
+		{"1", args{newYarrows}, read},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := tt.args.y.castReading(); !reflect.DeepEqual(got, tt.want) {
+				fmt.Printf("got: %v\nwant: %v", got, tt.want)
 				t.Errorf("castReading() = %v, want %v", got, tt.want)
 			}
 		})
