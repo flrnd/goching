@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -104,7 +103,6 @@ func Test_castReading(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := tt.args.y.castReading(); !reflect.DeepEqual(got, tt.want) {
-				fmt.Printf("got: %v\nwant: %v", got, tt.want)
 				t.Errorf("castReading() = %v, want %v", got, tt.want)
 			}
 		})
