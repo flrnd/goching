@@ -80,14 +80,11 @@ func Test_movingLines(t *testing.T) {
 }
 
 func generateCastStub() []string {
-	result := []string{"OYang", "Yin", "Yin", "OYang", "OYang", "Yang"}
+	result := yarrow{"OYang", "Yin", "Yin", "OYang", "OYang", "Yang"}
 	return result
 }
 
 func Test_castReading(t *testing.T) {
-	yarrows := []string{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
-		"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin",
-	}
 	hex := hexagram{25, "100111"}
 	movingLines := []int{0, 3, 4}
 	resultingHex := hexagram{23, "000001"}
@@ -96,37 +93,18 @@ func Test_castReading(t *testing.T) {
 	type args struct {
 		y yarrow
 	}
+
 	tests := []struct {
 		name string
 		args args
 		want reading
 	}{
-		{"111111", args{yarrows}, read},
+		{"25 100111", args{yarrows}, read},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := tt.args.y.castReading(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("castReading() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_shuffle(t *testing.T) {
-	type args struct {
-		src []string
-	}
-	tests := []struct {
-		name string
-		args args
-		want []string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := shuffle(tt.args.src); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("shuffle() = %v, want %v", got, tt.want)
 			}
 		})
 	}
