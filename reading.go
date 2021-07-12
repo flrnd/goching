@@ -86,7 +86,7 @@ func generateCast(yarrow []string) []string {
 	return cast
 }
 
-func generateReading(yarrow []string) reading {
+func castReading(yarrow []string) reading {
 	cast := generateCast(yarrow)
 	hex := hexagram{}
 	relatingHex := hexagram{}
@@ -112,6 +112,18 @@ func generateReading(yarrow []string) reading {
 	return reading
 }
 
+func (r reading) print() {
+	fmt.Printf("Hexagram: %v\n", r.Hexagram.Number)
+	if len(r.MovingLines) > 0 {
+		fmt.Print("Lines: ")
+		for _, line := range r.MovingLines {
+			fmt.Printf("%v ", line+1)
+		}
+		fmt.Println()
+		fmt.Printf("Relating: %v\n", r.RelatingHex.Number)
+	}
+}
+
 // main function
 func main() {
 	rand.Seed(time.Now().UnixNano())
@@ -122,7 +134,7 @@ func main() {
 
 	shuffled := shuffle(yarrow)
 
-	newReading := generateReading(shuffled)
+	newReading := castReading(shuffled)
 
-	println(newReading.Hexagram.Number)
+	newReading.print()
 }
