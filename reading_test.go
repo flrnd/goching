@@ -1,8 +1,9 @@
 package main
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func Test_hexagram_findRelatingHexagram(t *testing.T) {
@@ -28,7 +29,7 @@ func Test_hexagram_findRelatingHexagram(t *testing.T) {
 				Number:       tt.fields.Number,
 				BinaryString: tt.fields.BinaryString,
 			}
-			if got := hex.findRelatingHexagram(tt.args.lines); !reflect.DeepEqual(got, tt.want) {
+			if got := hex.findRelatingHexagram(tt.args.lines); !cmp.Equal(got, tt.want) {
 				t.Errorf("hexagram.findRelatingHexagram() = %v, want %v", got, tt.want)
 			}
 		})
@@ -72,7 +73,7 @@ func Test_movingLines(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := movingLines(tt.args.hex); !reflect.DeepEqual(got, tt.want) {
+			if got := movingLines(tt.args.hex); !cmp.Equal(got, tt.want) {
 				t.Errorf("movingLines() = %v, want %v", got, tt.want)
 			}
 		})
@@ -80,7 +81,7 @@ func Test_movingLines(t *testing.T) {
 }
 
 func newCastStub() yarrow {
-	return yarrow{"Yang OYang OYang Yin Yang Yin"}
+	return yarrow{"Yang", "OYang", "OYang", "Yin", "Yang", "Yin"}
 }
 
 func Test_castReading(t *testing.T) {
@@ -102,7 +103,7 @@ func Test_castReading(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.args.y.castReading(); !reflect.DeepEqual(got, tt.want) {
+			if got := tt.args.y.castReading(); !cmp.Equal(got, tt.want) {
 				t.Errorf("castReading() = %v, want %v", got, tt.want)
 			}
 		})
