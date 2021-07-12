@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+type yarrow []string
+
 type hexagram struct {
 	Number       int
 	BinaryString string
@@ -32,7 +34,7 @@ func (hex hexagram) findRelatingHexagram(lines []int) hexagram {
 	return relatingHex
 }
 
-func shuffle(src []string) []string {
+func shuffle(src []string) yarrow {
 	size := len(src)
 	dest := make([]string, size)
 	perm := rand.Perm(size)
@@ -76,18 +78,18 @@ func movingLines(hex []string) []int {
 	return moving
 }
 
-func generateCast(yarrow []string) []string {
+func (y yarrow) newCast() []string {
 	size := 6
 	cast := make([]string, size)
 	for index := range cast {
-		position := rand.Int() % len(yarrow)
-		cast[index] = yarrow[position]
+		position := rand.Int() % len(y)
+		cast[index] = y[position]
 	}
 	return cast
 }
 
-func castReading(yarrow []string) reading {
-	cast := generateCast(yarrow)
+func (y yarrow) castReading() reading {
+	cast := y.newCast()
 	hex := hexagram{}
 	relatingHex := hexagram{}
 	reading := reading{
@@ -134,7 +136,7 @@ func main() {
 
 	shuffled := shuffle(yarrow)
 
-	newReading := castReading(shuffled)
+	newReading := shuffled.castReading()
 
 	newReading.print()
 }
