@@ -35,13 +35,6 @@ func Test_hexagram_findRelatingHexagram(t *testing.T) {
 	}
 }
 
-func shuffleStub() []string {
-	yarrow := []string{"Yin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
-		"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "OYin",
-	}
-	return yarrow
-}
-
 func Test_toBinary(t *testing.T) {
 	type args struct {
 		hex []string
@@ -91,7 +84,7 @@ func generateCastStub() []string {
 	return result
 }
 
-func Test_generateReading(t *testing.T) {
+func Test_castReading(t *testing.T) {
 	yarrow := []string{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
 		"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin",
 	}
@@ -112,7 +105,7 @@ func Test_generateReading(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := generateReading(tt.args.yarrow); !reflect.DeepEqual(got, tt.want) {
+			if got := castReading(tt.args.yarrow); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("castReading() = %v, want %v", got, tt.want)
 			}
 		})
