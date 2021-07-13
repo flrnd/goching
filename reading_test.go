@@ -99,7 +99,7 @@ func Test_castReading(t *testing.T) {
 		args args
 		want reading
 	}{
-		{"1", args{newYarrows}, read},
+		{"1", args{yarrows}, read},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
