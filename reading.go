@@ -8,29 +8,29 @@ import (
 
 type yarrow []string
 
-type Hexagram struct {
+type hexagram struct {
 	Number       int
 	BinaryString string
 }
 
 type reading struct {
-	Hexagram    Hexagram
+	Hexagram    hexagram
 	Lines       yarrow
 	MovingLines []int
-	RelatingHex Hexagram
+	RelatingHex hexagram
 }
 
 var yarrows = yarrow{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
 	"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin",
 }
 
-func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
+func (hex hexagram) findRelatingHexagram(lines []int) hexagram {
 	bs := strings.Split(hex.BinaryString, "")
 	for _, line := range lines {
 		num, _ := strconv.Atoi(bs[line])
 		bs[line] = strconv.Itoa(num ^ 1)
 	}
-	relatingHex := Hexagram{}
+	relatingHex := hexagram{}
 	relatingHex.BinaryString = strings.Join(bs, "")
 	relating, _ := binaryStringToHexagram(relatingHex.BinaryString)
 	relatingHex.Number = relating
@@ -93,7 +93,7 @@ func (y yarrow) newCast() []string {
 	return cast
 }
 
-func (y yarrow) CastReading() reading {
+func (y yarrow) castReading() reading {
 	cast := y.newCast()
 	binaryString := toBinary(cast)
 
@@ -103,13 +103,13 @@ func (y yarrow) CastReading() reading {
 		panic(err)
 	}
 
-	hex := Hexagram{
+	hex := hexagram{
 		Number:       hexNumber,
 		BinaryString: binaryString,
 	}
 
 	movingLines := movingLines(cast)
-	var relatingHex Hexagram
+	var relatingHex hexagram
 
 	if len(movingLines) > 0 {
 		relatingHex = hex.findRelatingHexagram(movingLines)
