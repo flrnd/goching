@@ -1,3 +1,3 @@
-# I Ching cli
+# I Ching go
 
-golang I Ching cli
+I Ching library written in Go
