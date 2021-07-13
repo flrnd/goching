@@ -18,14 +18,14 @@ func Test_hexagram_findRelatingHexagram(t *testing.T) {
 		name   string
 		fields fields
 		args   args
-		want   Hexagram
+		want   hexagram
 	}{
-		{"111111", fields{1, "111111"}, args{[]int{0, 1, 2, 3, 4, 5}}, Hexagram{2, "000000"}},
-		{"111111", fields{1, "111111"}, args{[]int{0, 2}}, Hexagram{6, "010111"}},
+		{"111111", fields{1, "111111"}, args{[]int{0, 1, 2, 3, 4, 5}}, hexagram{2, "000000"}},
+		{"111111", fields{1, "111111"}, args{[]int{0, 2}}, hexagram{6, "010111"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			hex := Hexagram{
+			hex := hexagram{
 				Number:       tt.fields.Number,
 				BinaryString: tt.fields.BinaryString,
 			}
@@ -85,9 +85,9 @@ func newCastStub() yarrow {
 }
 
 func Test_CastReading(t *testing.T) {
-	hex := Hexagram{5, "111010"}
+	hex := hexagram{5, "111010"}
 	movingLines := []int{1, 2}
-	resultingHex := Hexagram{3, "100010"}
+	resultingHex := hexagram{3, "100010"}
 	read := reading{hex, newCastStub(), movingLines, resultingHex}
 
 	type args struct {
@@ -103,8 +103,8 @@ func Test_CastReading(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.args.y.CastReading(); !cmp.Equal(got, tt.want) {
-				t.Errorf("CastReading() = %v, want %v", got, tt.want)
+			if got := tt.args.y.castReading(); !cmp.Equal(got, tt.want) {
+				t.Errorf("castReading() = %v, want %v", got, tt.want)
 			}
 		})
 	}
