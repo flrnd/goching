@@ -2,6 +2,7 @@ package goching
 
 import (
 	"fmt"
+	"regexp"
 )
 
 var dictNumberToString = map[int]string{
@@ -139,20 +140,27 @@ var dictStringToNumber = map[string]int{
 }
 
 // hexagramToBinaryString function number to binary string
-func hexagramToBinaryString(hexagram int) (string, error) {
-	if isValidHexagram(hexagram) {
-		return dictNumberToString[hexagram], nil
+func hexagramToBinaryString(h int) (string, error) {
+	if isValidHexagram(h) {
+		return dictNumberToString[h], nil
 	} else {
-		return "", fmt.Errorf("invalid hexagram number %v", hexagram)
+		return "", fmt.Errorf("invalid hexagram number %v", h)
 	}
 }
 
 // binaryStringToHexagram key value binary string to number
 func binaryStringToHexagram(s string) (int, error) {
-
-	return dictStringToNumber[s], nil
+	if isValidBinaryString(s) {
+		return dictStringToNumber[s], nil
+	}
+	return -1, fmt.Errorf("invalid binary string %v", s)
 }
 
 func isValidHexagram(h int) bool {
 	return h > 0 && h < 65
+}
+
+func isValidBinaryString(s string) bool {
+	match, _ := regexp.MatchString(`[01]{6}`, s)
+	return match
 }
