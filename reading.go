@@ -1,11 +1,10 @@
-package main
+package goching
 
 import (
 	"fmt"
 	"math/rand"
 	"strconv"
 	"strings"
-	"time"
 )
 
 type yarrow []string
@@ -116,22 +115,4 @@ func (y yarrow) castReading() reading {
 		MovingLines: movingLines,
 		RelatingHex: relatingHex,
 	}
-}
-
-func (r reading) print() {
-	fmt.Printf("Hexagram: %v\n", r.Hexagram.Number)
-	if len(r.MovingLines) > 0 {
-		fmt.Print("Lines: ")
-		for _, line := range r.MovingLines {
-			fmt.Printf("%v ", line+1)
-		}
-		fmt.Println()
-		fmt.Printf("Relating: %v\n", r.RelatingHex.Number)
-	}
-}
-
-// main function
-func main() {
-	rand.Seed(time.Now().UnixNano())
-	newYarrows.castReading().print()
 }

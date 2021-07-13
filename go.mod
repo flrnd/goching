@@ -1,4 +1,4 @@
-module github.com/flrnd/ching_cli
+module github.com/flrnd/goching
 
 go 1.16
 

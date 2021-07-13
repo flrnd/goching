@@ -1,4 +1,4 @@
-package main
+package goching
 
 // HexNumberToBinaryString function number to binary string
 func HexNumberToBinaryString(n int) string {
