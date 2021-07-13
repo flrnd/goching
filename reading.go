@@ -48,7 +48,7 @@ func (y yarrow) shuffle() yarrow {
 	return dest
 }
 
-var newYarrows = yarrows.shuffle()
+var NewYarrows = yarrows.shuffle()
 
 func toBinary(hex []string) string {
 	var sb strings.Builder
