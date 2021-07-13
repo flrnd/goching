@@ -2,7 +2,6 @@ package goching
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 	"strings"
 )
@@ -41,7 +40,7 @@ func (hex hexagram) findRelatingHexagram(lines []int) hexagram {
 func (y yarrow) shuffle() yarrow {
 	size := len(y)
 	dest := make(yarrow, size)
-	perm := rand.Perm(size)
+	perm := rng.Perm(size)
 	for index := range y {
 		dest[index] = y[perm[index]]
 	}
@@ -88,7 +87,7 @@ func (y yarrow) newCast() []string {
 	size := 6
 	cast := make([]string, size)
 	for index := range cast {
-		position := rand.Int() % len(y)
+		position := rng.Int() % len(y)
 		cast[index] = y[position]
 	}
 	return cast
