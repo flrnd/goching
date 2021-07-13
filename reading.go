@@ -93,7 +93,7 @@ func (y yarrow) newCast() []string {
 	return cast
 }
 
-func (y yarrow) castReading() reading {
+func (y yarrow) CastReading() reading {
 	cast := y.newCast()
 	binaryString := toBinary(cast)
 

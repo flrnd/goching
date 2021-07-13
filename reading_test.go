@@ -84,7 +84,7 @@ func newCastStub() yarrow {
 	return yarrow{"Yang", "OYang", "OYang", "Yin", "Yang", "Yin"}
 }
 
-func Test_castReading(t *testing.T) {
+func Test_CastReading(t *testing.T) {
 	hex := hexagram{5, "111010"}
 	movingLines := []int{1, 2}
 	resultingHex := hexagram{3, "100010"}
@@ -103,8 +103,8 @@ func Test_castReading(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.args.y.castReading(); !cmp.Equal(got, tt.want) {
-				t.Errorf("castReading() = %v, want %v", got, tt.want)
+			if got := tt.args.y.CastReading(); !cmp.Equal(got, tt.want) {
+				t.Errorf("CastReading() = %v, want %v", got, tt.want)
 			}
 		})
 	}
