@@ -8,6 +8,8 @@ import (
 
 type yarrow []string
 
+type cast []string
+
 type Hexagram struct {
 	Number       int
 	BinaryString string
@@ -15,13 +17,9 @@ type Hexagram struct {
 
 type Reading struct {
 	Hexagram    Hexagram
-	Lines       yarrow
+	Lines       cast
 	MovingLines []int
 	RelatingHex Hexagram
-}
-
-var yarrows = yarrow{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
-	"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin",
 }
 
 func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
@@ -48,12 +46,10 @@ func (y yarrow) shuffle() yarrow {
 	return dest
 }
 
-var NewYarrows = yarrows.shuffle()
-
-func toBinary(hex []string) string {
+func (c cast) toBinarySeqString() string {
 	var sb strings.Builder
 
-	for _, element := range hex {
+	for _, element := range c {
 		switch element {
 		case "OYin":
 			fmt.Fprintf(&sb, "0")
@@ -69,21 +65,21 @@ func toBinary(hex []string) string {
 	return sb.String()
 }
 
-func movingLines(hex []string) []int {
-	var moving []int
+func (c cast) movingLines() []int {
+	var lines []int
 
-	for i, element := range hex {
-		switch element {
+	for i, line := range c {
+		switch line {
 		case "OYin":
-			moving = append(moving, i)
+			lines = append(lines, i)
 		case "OYang":
-			moving = append(moving, i)
+			lines = append(lines, i)
 		}
 	}
-	return moving
+	return lines
 }
 
-func (y yarrow) newCast() []string {
+func (y yarrow) newCast() cast {
 	size := 6
 	cast := make([]string, size)
 	for index := range cast {
@@ -95,7 +91,7 @@ func (y yarrow) newCast() []string {
 
 func (y yarrow) CastReading() Reading {
 	cast := y.newCast()
-	binaryString := toBinary(cast)
+	binaryString := cast.toBinarySeqString()
 
 	hexNumber, err := binaryStringToHexagram(binaryString)
 
@@ -108,17 +104,16 @@ func (y yarrow) CastReading() Reading {
 		BinaryString: binaryString,
 	}
 
-	movingLines := movingLines(cast)
 	var relatingHex Hexagram
 
-	if len(movingLines) > 0 {
+	if movingLines := cast.movingLines(); len(movingLines) > 0 {
 		relatingHex = hex.findRelatingHexagram(movingLines)
 	}
 
 	return Reading{
 		Hexagram:    hex,
 		Lines:       cast,
-		MovingLines: movingLines,
+		MovingLines: cast.movingLines(),
 		RelatingHex: relatingHex,
 	}
 }

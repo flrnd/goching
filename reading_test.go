@@ -38,21 +38,21 @@ func Test_hexagram_findRelatingHexagram(t *testing.T) {
 
 func Test_toBinary(t *testing.T) {
 	type args struct {
-		hex []string
+		hex cast
 	}
 	tests := []struct {
 		name string
 		args args
 		want string
 	}{
-		{"Yin", args{[]string{"Yin", "Yin", "Yin", "Yin", "Yin", "Yin"}}, "000000"},
-		{"Yang", args{[]string{"Yang", "Yang", "Yang", "Yang", "Yang", "Yang"}}, "111111"},
-		{"OYin", args{[]string{"Yang", "OYin", "Yin", "Yin", "Yin", "Yin"}}, "100000"},
-		{"OYang", args{[]string{"Yang", "Yin", "Yin", "Yin", "Yin", "OYang"}}, "100001"},
+		{"Yin", args{cast{"Yin", "Yin", "Yin", "Yin", "Yin", "Yin"}}, "000000"},
+		{"Yang", args{cast{"Yang", "Yang", "Yang", "Yang", "Yang", "Yang"}}, "111111"},
+		{"OYin", args{cast{"Yang", "OYin", "Yin", "Yin", "Yin", "Yin"}}, "100000"},
+		{"OYang", args{cast{"Yang", "Yin", "Yin", "Yin", "Yin", "OYang"}}, "100001"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := toBinary(tt.args.hex); got != tt.want {
+			if got := tt.args.hex.toBinarySeqString(); got != tt.want {
 				t.Errorf("toBinary() = %v, want %v", got, tt.want)
 			}
 		})
@@ -61,7 +61,7 @@ func Test_toBinary(t *testing.T) {
 
 func Test_movingLines(t *testing.T) {
 	type args struct {
-		hex []string
+		hex cast
 	}
 	tests := []struct {
 		name string
@@ -73,15 +73,15 @@ func Test_movingLines(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := movingLines(tt.args.hex); !cmp.Equal(got, tt.want) {
+			if got := tt.args.hex.movingLines(); !cmp.Equal(got, tt.want) {
 				t.Errorf("movingLines() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func newCastStub() yarrow {
-	return yarrow{"Yang", "OYang", "OYang", "Yin", "Yang", "Yin"}
+func newCastStub() cast {
+	return cast{"Yang", "OYang", "OYang", "Yin", "Yang", "Yin"}
 }
 
 func Test_CastReading(t *testing.T) {
