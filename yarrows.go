@@ -1,7 +1,7 @@
 package goching
 
-var yarrows = yarrow{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
+var stalks = yarrows{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
 	"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin",
 }
 
-var NewYarrows = yarrows.shuffle()
+var NewYarrows = stalks.shuffle()

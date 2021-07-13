@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-type yarrow []string
+type yarrows []string
 
 type cast []string
 
@@ -35,9 +35,9 @@ func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 	return relatingHex
 }
 
-func (y yarrow) shuffle() yarrow {
+func (y yarrows) shuffle() yarrows {
 	size := len(y)
-	dest := make(yarrow, size)
+	dest := make(yarrows, size)
 	perm := rng.Perm(size)
 	for index := range y {
 		dest[index] = y[perm[index]]
@@ -46,7 +46,7 @@ func (y yarrow) shuffle() yarrow {
 	return dest
 }
 
-func (c cast) toBinarySeqString() string {
+func (c cast) asBinarySeqString() string {
 	var sb strings.Builder
 
 	for _, element := range c {
@@ -65,7 +65,7 @@ func (c cast) toBinarySeqString() string {
 	return sb.String()
 }
 
-func (c cast) movingLines() []int {
+func (c cast) getMovingLines() []int {
 	var lines []int
 
 	for i, line := range c {
@@ -79,7 +79,7 @@ func (c cast) movingLines() []int {
 	return lines
 }
 
-func (y yarrow) newCast() cast {
+func (y yarrows) newCast() cast {
 	size := 6
 	cast := make([]string, size)
 	for index := range cast {
@@ -89,9 +89,9 @@ func (y yarrow) newCast() cast {
 	return cast
 }
 
-func (y yarrow) CastReading() Reading {
+func (y yarrows) CastReading() Reading {
 	cast := y.newCast()
-	binaryString := cast.toBinarySeqString()
+	binaryString := cast.asBinarySeqString()
 
 	hexNumber, err := binaryStringToHexagram(binaryString)
 
@@ -106,14 +106,14 @@ func (y yarrow) CastReading() Reading {
 
 	var relatingHex Hexagram
 
-	if movingLines := cast.movingLines(); len(movingLines) > 0 {
+	if movingLines := cast.getMovingLines(); len(movingLines) > 0 {
 		relatingHex = hex.findRelatingHexagram(movingLines)
 	}
 
 	return Reading{
 		Hexagram:    hex,
 		Lines:       cast,
-		MovingLines: cast.movingLines(),
+		MovingLines: cast.getMovingLines(),
 		RelatingHex: relatingHex,
 	}
 }
