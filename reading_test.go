@@ -88,7 +88,7 @@ func Test_CastReading(t *testing.T) {
 	hex := Hexagram{5, "111010"}
 	movingLines := []int{1, 2}
 	resultingHex := Hexagram{3, "100010"}
-	read := reading{hex, newCastStub(), movingLines, resultingHex}
+	read := Reading{hex, newCastStub(), movingLines, resultingHex}
 
 	type args struct {
 		y yarrow
@@ -97,7 +97,7 @@ func Test_CastReading(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want reading
+		want Reading
 	}{
 		{"1", args{yarrows}, read},
 	}

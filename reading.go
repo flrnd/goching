@@ -13,7 +13,7 @@ type Hexagram struct {
 	BinaryString string
 }
 
-type reading struct {
+type Reading struct {
 	Hexagram    Hexagram
 	Lines       yarrow
 	MovingLines []int
@@ -93,7 +93,7 @@ func (y yarrow) newCast() []string {
 	return cast
 }
 
-func (y yarrow) CastReading() reading {
+func (y yarrow) CastReading() Reading {
 	cast := y.newCast()
 	binaryString := toBinary(cast)
 
@@ -115,7 +115,7 @@ func (y yarrow) CastReading() reading {
 		relatingHex = hex.findRelatingHexagram(movingLines)
 	}
 
-	return reading{
+	return Reading{
 		Hexagram:    hex,
 		Lines:       cast,
 		MovingLines: movingLines,
