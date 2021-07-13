@@ -86,9 +86,10 @@ func newCastStub() cast {
 
 func Test_CastReading(t *testing.T) {
 	hex := Hexagram{5, "111010"}
+	lines := newCastStub()
 	movingLines := []int{1, 2}
 	resultingHex := Hexagram{3, "100010"}
-	read := Reading{hex, newCastStub(), movingLines, resultingHex}
+	read := Reading{hex, lines, movingLines, resultingHex}
 
 	type args struct {
 		y yarrows
