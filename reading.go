@@ -33,7 +33,8 @@ func (hex hexagram) findRelatingHexagram(lines []int) hexagram {
 	}
 	relatingHex := hexagram{}
 	relatingHex.BinaryString = strings.Join(bs, "")
-	relatingHex.Number = HexBinaryStringToNumber(relatingHex.BinaryString)
+	relating, _ := binaryStringToHexagram(relatingHex.BinaryString)
+	relatingHex.Number = relating
 	return relatingHex
 }
 
@@ -97,8 +98,14 @@ func (y yarrow) castReading() reading {
 	cast := y.newCast()
 	binaryString := toBinary(cast)
 
+	hexNumber, err := binaryStringToHexagram(binaryString)
+
+	if err != nil {
+		panic(err)
+	}
+
 	hex := hexagram{
-		Number:       HexBinaryStringToNumber(binaryString),
+		Number:       hexNumber,
 		BinaryString: binaryString,
 	}
 
