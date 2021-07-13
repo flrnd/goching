@@ -6,22 +6,6 @@ import (
 	"strings"
 )
 
-type yarrows []string
-
-type cast []string
-
-type Hexagram struct {
-	Number       int
-	BinaryString string
-}
-
-type Reading struct {
-	Hexagram    Hexagram
-	Lines       cast
-	MovingLines []int
-	RelatingHex Hexagram
-}
-
 func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 	bs := strings.Split(hex.BinaryString, "")
 	for _, line := range lines {
@@ -33,17 +17,6 @@ func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 	relating, _ := binaryStringToHexagram(relatingHex.BinaryString)
 	relatingHex.Number = relating
 	return relatingHex
-}
-
-func (y yarrows) shuffle() yarrows {
-	size := len(y)
-	dest := make(yarrows, size)
-	perm := rng.Perm(size)
-	for index := range y {
-		dest[index] = y[perm[index]]
-	}
-
-	return dest
 }
 
 func (c cast) asBinarySeqString() string {
@@ -79,19 +52,8 @@ func (c cast) getMovingLines() []int {
 	return lines
 }
 
-func (y yarrows) newCast() cast {
-	size := 6
-	cast := make([]string, size)
-	for index := range cast {
-		position := rng.Int() % len(y)
-		cast[index] = y[position]
-	}
-	return cast
-}
-
-func (y yarrows) CastReading() Reading {
-	cast := y.newCast()
-	binaryString := cast.asBinarySeqString()
+func CastReading(c cast) Reading {
+	binaryString := c.asBinarySeqString()
 
 	hexNumber, err := binaryStringToHexagram(binaryString)
 
@@ -99,21 +61,21 @@ func (y yarrows) CastReading() Reading {
 		panic(err)
 	}
 
-	hex := Hexagram{
+	hexagram := Hexagram{
 		Number:       hexNumber,
 		BinaryString: binaryString,
 	}
 
 	var relatingHex Hexagram
 
-	if movingLines := cast.getMovingLines(); len(movingLines) > 0 {
-		relatingHex = hex.findRelatingHexagram(movingLines)
+	if movingLines := c.getMovingLines(); len(movingLines) > 0 {
+		relatingHex = hexagram.findRelatingHexagram(movingLines)
 	}
 
 	return Reading{
-		Hexagram:    hex,
-		Lines:       cast,
-		MovingLines: cast.getMovingLines(),
+		Hexagram:    hexagram,
+		Lines:       c,
+		MovingLines: c.getMovingLines(),
 		RelatingHex: relatingHex,
 	}
 }

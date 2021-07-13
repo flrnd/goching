@@ -92,7 +92,7 @@ func Test_CastReading(t *testing.T) {
 	read := Reading{hex, lines, movingLines, resultingHex}
 
 	type args struct {
-		y yarrows
+		c cast
 	}
 
 	tests := []struct {
@@ -100,11 +100,11 @@ func Test_CastReading(t *testing.T) {
 		args args
 		want Reading
 	}{
-		{"1", args{stalks}, read},
+		{"1", args{lines}, read},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.args.y.CastReading(); !cmp.Equal(got, tt.want) {
+			if got := CastReading(cast(tt.args.c)); !cmp.Equal(got, tt.want) {
 				t.Errorf("CastReading() = %v, want %v", got, tt.want)
 			}
 		})
