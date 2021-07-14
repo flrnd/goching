@@ -143,9 +143,8 @@ var dictStringToNumber = map[string]int{
 func hexagramToBinaryString(h int) (string, error) {
 	if isValidHexagram(h) {
 		return dictNumberToString[h], nil
-	} else {
-		return "", fmt.Errorf("invalid hexagram number %v", h)
 	}
+	return "", fmt.Errorf("invalid hexagram number %v", h)
 }
 
 // binaryStringToHexagram key value binary string to number

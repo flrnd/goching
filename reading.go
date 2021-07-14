@@ -52,6 +52,7 @@ func (c cast) getMovingLines() []int {
 	return lines
 }
 
+// CastReading returns a full formed Reading struct
 func CastReading(c cast) Reading {
 	binaryString := c.asBinarySeqString()
 

@@ -25,4 +25,5 @@ func (y yarrows) getLines() cast {
 	return cast
 }
 
+// NewCast returns a slice with 6 string cast lines
 var NewCast = stalks.shuffle().getLines()
