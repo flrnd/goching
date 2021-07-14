@@ -68,8 +68,8 @@ func Test_getMovingLines(t *testing.T) {
 		args args
 		want []int
 	}{
-		{"OYin", args{[]string{"Yang", "OYin", "Yin", "Yin", "Yin", "Yin"}}, []int{1}},
-		{"OYin,OYang", args{[]string{"Yang", "OYin", "Yin", "OYang", "Yin", "Yin"}}, []int{1, 3}},
+		{"OYin", args{cast{"Yang", "OYin", "Yin", "Yin", "Yin", "Yin"}}, []int{1}},
+		{"OYin,OYang", args{cast{"Yang", "OYin", "Yin", "OYang", "Yin", "Yin"}}, []int{1, 3}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
