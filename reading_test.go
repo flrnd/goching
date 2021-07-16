@@ -85,14 +85,14 @@ func newCastStub() cast {
 }
 
 func Test_CastReading(t *testing.T) {
-	hex := Hexagram{5, "111010"}
+	hexagram := Hexagram{5, "111010"}
 	lines := newCastStub()
 	movingLines := []int{1, 2}
 	resultingHex := Hexagram{3, "100010"}
-	read := Reading{hex, lines, movingLines, resultingHex}
+	read := Reading{hexagram, lines, movingLines, resultingHex}
 
 	type args struct {
-		c cast
+		lines cast
 	}
 
 	tests := []struct {
@@ -104,7 +104,7 @@ func Test_CastReading(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := CastReading(cast(tt.args.c)); !cmp.Equal(got, tt.want) {
+			if got := CastReading(tt.args.lines); !cmp.Equal(got, tt.want) {
 				t.Errorf("CastReading() = %v, want %v", got, tt.want)
 			}
 		})
