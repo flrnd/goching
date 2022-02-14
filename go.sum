@@ -1,3 +1,5 @@
+github.com/flrnd/gorng v0.0.1 h1:+4Q/+7y9JxdrB2w9dnS7xPHE5LZKD/eTO3Iy0M5aYxg=
+github.com/flrnd/gorng v0.0.1/go.mod h1:iPn5UZb1g1sA4WY9BAcFrtspTMrn+nfyrA6JnS2ho7U=
 github.com/google/go-cmp v0.5.6 h1:BKbKCqvP6I+rmFHt06ZmyQtvB8xAkWdhFyr0ZUNZcxQ=
 github.com/google/go-cmp v0.5.6/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 h1:E7g+9GITq07hpfrRu66IVDexMakfv52eLZ2CXBWiKr4=
