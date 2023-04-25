@@ -1,4 +1,4 @@
-package goching
+package dictionary
 
 import (
 	"errors"
@@ -147,23 +147,23 @@ var ErrInvalidHexagramNumber = errors.New("Invalid hexagram number")
 // ErrInvalidBinaryString is returnes with invalid binary string
 var ErrInvalidBinaryString = errors.New("Invalid binary string")
 
-// hexagramToBinaryString convert an hexagram number to its binary string
-func hexagramToBinaryString(h int) (b *string, e error) {
-	if !isValidHexagram(h) {
+// GetBinaryString returns a binary string from an hexagram
+func GetBinaryString(hexagram int) (b *string, e error) {
+	if !isValidHexagram(hexagram) {
 		return nil, ErrInvalidHexagramNumber
 	}
 
-	bString := dictNumberToString[h]
+	bString := dictNumberToString[hexagram]
 	return &bString, nil
 }
 
-// binaryStringToHexagram returns the hexagram number for a given binary string
-func binaryStringToHexagram(s string) (h *int, e error) {
-	if !isValidBinaryString(s) {
+// GetHexagram returns the hexagram from a binary string
+func GetHexagram(binaryString string) (h *int, e error) {
+	if !isValidBinaryString(binaryString) {
 		return nil, ErrInvalidBinaryString
 	}
 
-	hex := dictStringToNumber[s]
+	hex := dictStringToNumber[binaryString]
 	return &hex, nil
 }
 
