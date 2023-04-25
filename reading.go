@@ -55,9 +55,8 @@ func (c readingCast) getMovingLines() []int {
 // CastReading returns a full formed Reading struct
 func CastReading(c readingCast) Reading {
 	binaryString := c.asBinarySeqString()
-
+	lines := c.getMovingLines()
 	hexNumber, err := binaryStringToHexagram(binaryString)
-
 	if err != nil {
 		panic(err)
 	}
@@ -69,13 +68,13 @@ func CastReading(c readingCast) Reading {
 
 	var relating Hexagram
 
-	if lines := c.getMovingLines(); len(lines) > 0 {
+	if len(lines) > 0 {
 		relating = hexagram.findRelatingHexagram(lines)
 	}
 
 	return Reading{
 		Hexagram: hexagram,
-		Lines:    c.getMovingLines(),
+		Lines:    lines,
 		Relating: relating,
 	}
 }
