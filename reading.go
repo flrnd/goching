@@ -21,8 +21,8 @@ type Hexagram struct {
 
 // Reading is an I Ching reading cast
 type Reading struct {
-	Hexagram *Hexagram
-	Relating *Hexagram
+	Hexagram Hexagram
+	Relating Hexagram
 	Lines    []int
 }
 
@@ -31,22 +31,24 @@ func isLine(line string, pattern string) bool {
 	return validLine.MatchString(line)
 }
 
-func (hex Hexagram) findRelatingHexagram(lines []int) *Hexagram {
+func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 	bs := strings.Split(hex.BinaryString, "")
+
 	for _, line := range lines {
 		num, _ := strconv.Atoi(bs[line])
 		bs[line] = strconv.Itoa(num ^ 1)
 	}
+
 	relatingHex := Hexagram{}
 	relatingHex.BinaryString = strings.Join(bs, "")
 	relating, err := dictionary.GetHexagram(relatingHex.BinaryString)
 
 	if err != nil && errors.Is(err, dictionary.ErrInvalidBinaryString) {
-		return nil
+		return Hexagram{}
+	} else {
+		relatingHex.Number = *relating
+		return relatingHex
 	}
-
-	relatingHex.Number = *relating
-	return &relatingHex
 }
 
 func (c readingCast) asBinarySeqString() string {
@@ -87,12 +89,12 @@ func CastReading(c readingCast) *Reading {
 		return nil
 	}
 
-	hexagram := &Hexagram{
+	hexagram := Hexagram{
 		Number:       *hexagramNumber,
 		BinaryString: binaryString,
 	}
 
-	var relating *Hexagram
+	var relating Hexagram
 
 	if len(lines) > 0 {
 		relating = hexagram.findRelatingHexagram(lines)
