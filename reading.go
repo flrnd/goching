@@ -1,18 +1,37 @@
 package goching
 
 import (
+	"errors"
 	"fmt"
+	"log"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/flrnd/goching/dictionary"
 )
+
+type readingCast []string
+
+// Hexagram number and a binary sequence string
+type Hexagram struct {
+	Number       int
+	BinaryString string
+}
+
+// Reading is an I Ching reading cast
+type Reading struct {
+	Hexagram *Hexagram
+	Relating *Hexagram
+	Lines    []int
+}
 
 func isLine(line string, pattern string) bool {
 	var validLine = regexp.MustCompile(fmt.Sprintf("(?i)%s$", pattern))
 	return validLine.MatchString(line)
 }
 
-func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
+func (hex Hexagram) findRelatingHexagram(lines []int) *Hexagram {
 	bs := strings.Split(hex.BinaryString, "")
 	for _, line := range lines {
 		num, _ := strconv.Atoi(bs[line])
@@ -20,12 +39,17 @@ func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 	}
 	relatingHex := Hexagram{}
 	relatingHex.BinaryString = strings.Join(bs, "")
-	relating, _ := binaryStringToHexagram(relatingHex.BinaryString)
-	relatingHex.Number = relating
-	return relatingHex
+	relating, err := dictionary.GetHexagram(relatingHex.BinaryString)
+
+	if err != nil && errors.Is(err, dictionary.ErrInvalidBinaryString) {
+		return nil
+	}
+
+	relatingHex.Number = *relating
+	return &relatingHex
 }
 
-func (c cast) asBinarySeqString() string {
+func (c readingCast) asBinarySeqString() string {
 	var sb strings.Builder
 
 	for _, line := range c {
@@ -40,7 +64,7 @@ func (c cast) asBinarySeqString() string {
 	return sb.String()
 }
 
-func (c cast) getMovingLines() []int {
+func (c readingCast) getMovingLines() []int {
 	var lines []int
 
 	for i, line := range c {
@@ -52,31 +76,31 @@ func (c cast) getMovingLines() []int {
 	return lines
 }
 
-// CastReading returns a full formed Reading struct
-func CastReading(c cast) Reading {
+// CastReading returns a Reading
+func CastReading(c readingCast) *Reading {
 	binaryString := c.asBinarySeqString()
+	lines := c.getMovingLines()
 
-	hexNumber, err := binaryStringToHexagram(binaryString)
-
-	if err != nil {
-		panic(err)
+	hexagramNumber, err := dictionary.GetHexagram(binaryString)
+	if err != nil && errors.Is(err, dictionary.ErrInvalidBinaryString) {
+		log.Printf("CastReading error: %v\n", err)
+		return nil
 	}
 
-	hexagram := Hexagram{
-		Number:       hexNumber,
+	hexagram := &Hexagram{
+		Number:       *hexagramNumber,
 		BinaryString: binaryString,
 	}
 
-	var relatingHex Hexagram
+	var relating *Hexagram
 
-	if movingLines := c.getMovingLines(); len(movingLines) > 0 {
-		relatingHex = hexagram.findRelatingHexagram(movingLines)
+	if len(lines) > 0 {
+		relating = hexagram.findRelatingHexagram(lines)
 	}
 
-	return Reading{
-		Hexagram:    hexagram,
-		Lines:       c,
-		MovingLines: c.getMovingLines(),
-		RelatingHex: relatingHex,
+	return &Reading{
+		Hexagram: hexagram,
+		Lines:    lines,
+		Relating: relating,
 	}
 }
