@@ -15,7 +15,7 @@ type readingCast []string
 
 // Hexagram number and a binary sequence string
 type Hexagram struct {
-	Number       *int
+	Number       int
 	BinaryString string
 }
 
@@ -45,7 +45,7 @@ func (hex Hexagram) findRelatingHexagram(lines []int) *Hexagram {
 		return nil
 	}
 
-	relatingHex.Number = relating
+	relatingHex.Number = *relating
 	return &relatingHex
 }
 
@@ -81,14 +81,14 @@ func CastReading(c readingCast) *Reading {
 	binaryString := c.asBinarySeqString()
 	lines := c.getMovingLines()
 
-	hexNumber, err := dictionary.GetHexagram(binaryString)
+	hexagramNumber, err := dictionary.GetHexagram(binaryString)
 	if err != nil && errors.Is(err, dictionary.ErrInvalidBinaryString) {
 		log.Printf("CastReading error: %v\n", err)
 		return nil
 	}
 
 	hexagram := &Hexagram{
-		Number:       hexNumber,
+		Number:       *hexagramNumber,
 		BinaryString: binaryString,
 	}
 
