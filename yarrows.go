@@ -6,19 +6,20 @@ type yarrows []string
 
 var stalks = yarrows{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin"}
 
-func (y yarrows) shuffle() yarrows {
-	size := len(y)
-	dest := make(yarrows, size)
-	perm := gorng.Rng.Perm(size)
+func shuffle() yarrows {
+	dest := make(yarrows, len(stalks))
+	perm := gorng.Rng.Perm(len(stalks))
 
-	for index := range y {
-		dest[index] = y[perm[index]]
+	for index := range stalks {
+		dest[index] = stalks[perm[index]]
 	}
 
 	return dest
 }
 
-func (y yarrows) getLines() readingCast {
+// NewStalks returns a new set of yarrow stalks
+func NewStalks() readingCast {
+	y := shuffle()
 	size := 6
 	cast := make([]string, size)
 
@@ -28,6 +29,3 @@ func (y yarrows) getLines() readingCast {
 	}
 	return cast
 }
-
-// NewCast returns a slice with 6 string cast lines
-var NewCast = stalks.shuffle().getLines()
