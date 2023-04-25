@@ -8,13 +8,13 @@ import (
 
 func print(reading goching.Reading) {
 	fmt.Printf("Hexagram: %v\n", reading.Hexagram.Number)
-	if len(reading.MovingLines) > 0 {
+	if len(reading.Lines) > 0 {
 		fmt.Print("Lines: ")
-		for _, line := range reading.MovingLines {
+		for _, line := range reading.Lines {
 			fmt.Printf("%v ", line+1)
 		}
 		fmt.Println()
-		fmt.Printf("Relating: %v\n", reading.RelatingHex.Number)
+		fmt.Printf("Relating: %v\n", reading.Relating.Number)
 	}
 }
 
