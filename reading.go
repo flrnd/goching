@@ -25,7 +25,7 @@ func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 	return relatingHex
 }
 
-func (c cast) asBinarySeqString() string {
+func (c readingCast) asBinarySeqString() string {
 	var sb strings.Builder
 
 	for _, line := range c {
@@ -40,7 +40,7 @@ func (c cast) asBinarySeqString() string {
 	return sb.String()
 }
 
-func (c cast) getMovingLines() []int {
+func (c readingCast) getMovingLines() []int {
 	var lines []int
 
 	for i, line := range c {
@@ -53,7 +53,7 @@ func (c cast) getMovingLines() []int {
 }
 
 // CastReading returns a full formed Reading struct
-func CastReading(c cast) Reading {
+func CastReading(c readingCast) Reading {
 	binaryString := c.asBinarySeqString()
 
 	hexNumber, err := binaryStringToHexagram(binaryString)
@@ -67,16 +67,15 @@ func CastReading(c cast) Reading {
 		BinaryString: binaryString,
 	}
 
-	var relatingHex Hexagram
+	var relating Hexagram
 
-	if movingLines := c.getMovingLines(); len(movingLines) > 0 {
-		relatingHex = hexagram.findRelatingHexagram(movingLines)
+	if lines := c.getMovingLines(); len(lines) > 0 {
+		relating = hexagram.findRelatingHexagram(lines)
 	}
 
 	return Reading{
-		Hexagram:    hexagram,
-		Lines:       c,
-		MovingLines: c.getMovingLines(),
-		RelatingHex: relatingHex,
+		Hexagram: hexagram,
+		Lines:    c.getMovingLines(),
+		Relating: relating,
 	}
 }

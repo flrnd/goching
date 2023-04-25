@@ -2,7 +2,7 @@ package goching
 
 type yarrows []string
 
-type cast []string
+type readingCast []string
 
 // Hexagram number and a binary sequence string
 type Hexagram struct {
@@ -12,8 +12,7 @@ type Hexagram struct {
 
 // Reading is an I Ching reading cast
 type Reading struct {
-	Hexagram    Hexagram
-	Lines       cast
-	MovingLines []int
-	RelatingHex Hexagram
+	Hexagram Hexagram
+	Relating Hexagram
+	Lines    []int
 }

@@ -17,7 +17,7 @@ func (y yarrows) shuffle() yarrows {
 	return dest
 }
 
-func (y yarrows) getLines() cast {
+func (y yarrows) getLines() readingCast {
 	size := 6
 	cast := make([]string, size)
 	for index := range cast {
