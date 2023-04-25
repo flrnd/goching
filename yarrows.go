@@ -17,8 +17,8 @@ func shuffle() yarrows {
 	return dest
 }
 
-// New returns a new set of yarrow stalks
-func New() readingCast {
+// NewStalks returns a new set of yarrow stalks
+func NewStalks() readingCast {
 	y := shuffle()
 	size := 6
 	cast := make([]string, size)
