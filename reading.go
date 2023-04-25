@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/flrnd/goching/dictionary"
 )
 
 type readingCast []string
@@ -37,9 +39,9 @@ func (hex Hexagram) findRelatingHexagram(lines []int) *Hexagram {
 	}
 	relatingHex := Hexagram{}
 	relatingHex.BinaryString = strings.Join(bs, "")
-	relating, err := binaryStringToHexagram(relatingHex.BinaryString)
+	relating, err := dictionary.GetHexagram(relatingHex.BinaryString)
 
-	if err != nil && errors.Is(err, ErrInvalidBinaryString) {
+	if err != nil && errors.Is(err, dictionary.ErrInvalidBinaryString) {
 		return nil
 	}
 
@@ -79,8 +81,8 @@ func CastReading(c readingCast) *Reading {
 	binaryString := c.asBinarySeqString()
 	lines := c.getMovingLines()
 
-	hexNumber, err := binaryStringToHexagram(binaryString)
-	if err != nil && errors.Is(err, ErrInvalidBinaryString) {
+	hexNumber, err := dictionary.GetHexagram(binaryString)
+	if err != nil && errors.Is(err, dictionary.ErrInvalidBinaryString) {
 		log.Printf("CastReading error: %v\n", err)
 		return nil
 	}
