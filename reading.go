@@ -2,9 +2,15 @@ package goching
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
+
+func isLine(line string, pattern string) bool {
+	var validLine = regexp.MustCompile(fmt.Sprintf("(?i)%s$", pattern))
+	return validLine.MatchString(line)
+}
 
 func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 	bs := strings.Split(hex.BinaryString, "")
@@ -22,15 +28,11 @@ func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 func (c cast) asBinarySeqString() string {
 	var sb strings.Builder
 
-	for _, element := range c {
-		switch element {
-		case "OYin":
+	for _, line := range c {
+		if isLine(line, "yin") {
 			fmt.Fprintf(&sb, "0")
-		case "OYang":
-			fmt.Fprintf(&sb, "1")
-		case "Yin":
-			fmt.Fprintf(&sb, "0")
-		case "Yang":
+		}
+		if isLine(line, "yang") {
 			fmt.Fprintf(&sb, "1")
 		}
 	}
@@ -42,13 +44,11 @@ func (c cast) getMovingLines() []int {
 	var lines []int
 
 	for i, line := range c {
-		switch line {
-		case "OYin":
-			lines = append(lines, i)
-		case "OYang":
+		if isLine(line, "oyin") || isLine(line, "oyang") {
 			lines = append(lines, i)
 		}
 	}
+
 	return lines
 }
 
