@@ -1,10 +1,11 @@
 package goching
 
 import (
-	"fmt"
+	"errors"
 	"regexp"
 )
 
+// dictNumberToString map with hex number and its binary string
 var dictNumberToString = map[int]string{
 	1:  "111111",
 	2:  "000000",
@@ -72,6 +73,7 @@ var dictNumberToString = map[int]string{
 	64: "010101",
 }
 
+// dictStringToNumber is a map with binary strings and hex number
 var dictStringToNumber = map[string]int{
 	"111111": 1,
 	"000000": 2,
@@ -139,20 +141,30 @@ var dictStringToNumber = map[string]int{
 	"010101": 64,
 }
 
-// hexagramToBinaryString function number to binary string
-func hexagramToBinaryString(h int) (string, error) {
-	if isValidHexagram(h) {
-		return dictNumberToString[h], nil
+// ErrInvalidHexagramNumber is returned when request an invalid hexagram
+var ErrInvalidHexagramNumber = errors.New("Invalid hexagram number")
+
+// ErrInvalidBinaryString is returnes with invalid binary string
+var ErrInvalidBinaryString = errors.New("Invalid binary string")
+
+// hexagramToBinaryString convert an hexagram number to its binary string
+func hexagramToBinaryString(h int) (b *string, e error) {
+	if !isValidHexagram(h) {
+		return nil, ErrInvalidHexagramNumber
 	}
-	return "", fmt.Errorf("invalid hexagram number %v", h)
+
+	bString := dictNumberToString[h]
+	return &bString, nil
 }
 
-// binaryStringToHexagram key value binary string to number
-func binaryStringToHexagram(s string) (int, error) {
-	if isValidBinaryString(s) {
-		return dictStringToNumber[s], nil
+// binaryStringToHexagram returns the hexagram number for a given binary string
+func binaryStringToHexagram(s string) (h *int, e error) {
+	if !isValidBinaryString(s) {
+		return nil, ErrInvalidBinaryString
 	}
-	return -1, fmt.Errorf("invalid binary string %v", s)
+
+	hex := dictStringToNumber[s]
+	return &hex, nil
 }
 
 func isValidHexagram(h int) bool {

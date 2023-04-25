@@ -2,6 +2,8 @@ package goching
 
 import "github.com/flrnd/gorng"
 
+type yarrows []string
+
 var stalks = yarrows{"OYin", "OYang", "OYang", "OYang", "Yang", "Yang", "Yang", "Yang", "Yang",
 	"Yin", "Yin", "Yin", "Yin", "Yin", "Yin", "Yin",
 }

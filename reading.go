@@ -1,18 +1,35 @@
 package goching
 
 import (
+	"errors"
 	"fmt"
+	"log"
 	"regexp"
 	"strconv"
 	"strings"
 )
+
+type readingCast []string
+
+// Hexagram number and a binary sequence string
+type Hexagram struct {
+	Number       *int
+	BinaryString string
+}
+
+// Reading is an I Ching reading cast
+type Reading struct {
+	Hexagram *Hexagram
+	Relating *Hexagram
+	Lines    []int
+}
 
 func isLine(line string, pattern string) bool {
 	var validLine = regexp.MustCompile(fmt.Sprintf("(?i)%s$", pattern))
 	return validLine.MatchString(line)
 }
 
-func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
+func (hex Hexagram) findRelatingHexagram(lines []int) *Hexagram {
 	bs := strings.Split(hex.BinaryString, "")
 	for _, line := range lines {
 		num, _ := strconv.Atoi(bs[line])
@@ -20,9 +37,14 @@ func (hex Hexagram) findRelatingHexagram(lines []int) Hexagram {
 	}
 	relatingHex := Hexagram{}
 	relatingHex.BinaryString = strings.Join(bs, "")
-	relating, _ := binaryStringToHexagram(relatingHex.BinaryString)
+	relating, err := binaryStringToHexagram(relatingHex.BinaryString)
+
+	if err != nil && errors.Is(err, ErrInvalidBinaryString) {
+		return nil
+	}
+
 	relatingHex.Number = relating
-	return relatingHex
+	return &relatingHex
 }
 
 func (c readingCast) asBinarySeqString() string {
@@ -52,27 +74,29 @@ func (c readingCast) getMovingLines() []int {
 	return lines
 }
 
-// CastReading returns a full formed Reading struct
-func CastReading(c readingCast) Reading {
+// CastReading returns a Reading
+func CastReading(c readingCast) *Reading {
 	binaryString := c.asBinarySeqString()
 	lines := c.getMovingLines()
+
 	hexNumber, err := binaryStringToHexagram(binaryString)
-	if err != nil {
-		panic(err)
+	if err != nil && errors.Is(err, ErrInvalidBinaryString) {
+		log.Printf("CastReading error: %v\n", err)
+		return nil
 	}
 
-	hexagram := Hexagram{
+	hexagram := &Hexagram{
 		Number:       hexNumber,
 		BinaryString: binaryString,
 	}
 
-	var relating Hexagram
+	var relating *Hexagram
 
 	if len(lines) > 0 {
 		relating = hexagram.findRelatingHexagram(lines)
 	}
 
-	return Reading{
+	return &Reading{
 		Hexagram: hexagram,
 		Lines:    lines,
 		Relating: relating,
